@@ -59,9 +59,15 @@ class NWCClient:
         self._conn = NWCConnection.parse(connection_string)
         self._timeout = timeout
         self._ws = None
-        self._client_pubkey = private_key_to_public_key(self._conn.secret)
+        try:
+            self._client_pubkey = private_key_to_public_key(self._conn.secret)
+        except Exception:
+            raise ValueError("Invalid secret key in NWC connection string")
 
     async def __aenter__(self):
+        # TLS certificate verification: websockets.connect() uses the default
+        # ssl context when the URI scheme is wss://, which validates certificates
+        # against the system trust store. No explicit ssl= parameter is needed.
         self._ws = await websockets.connect(self._conn.relay)
         return self
 
@@ -129,17 +135,36 @@ class NWCClient:
                 if remaining <= 0:
                     break
                 raw = await asyncio.wait_for(self._ws.recv(), timeout=remaining)
-                data = json.loads(raw)
+
+                try:
+                    data = json.loads(raw)
+                except (json.JSONDecodeError, TypeError) as exc:
+                    raise RuntimeError(f"Invalid JSON from relay: {exc}") from exc
+
+                if not isinstance(data, list) or len(data) < 2:
+                    continue  # unexpected message format, skip
 
                 if data[0] == "EVENT" and data[1] == sub_id:
+                    if len(data) < 3 or not isinstance(data[2], dict):
+                        raise RuntimeError("Malformed EVENT message from relay")
                     response_event = data[2]
+                    if "content" not in response_event:
+                        raise RuntimeError("EVENT message missing 'content' field")
+
                     # Decrypt the response content
                     response_plaintext = decrypt(
                         recipient_nsec=self._conn.secret,
                         sender_npub=self._conn.wallet_pubkey,
                         ciphertext=response_event["content"],
                     )
-                    result = json.loads(response_plaintext)
+
+                    try:
+                        result = json.loads(response_plaintext)
+                    except (json.JSONDecodeError, TypeError) as exc:
+                        raise RuntimeError(f"Invalid JSON in decrypted response: {exc}") from exc
+
+                    if not isinstance(result, dict):
+                        raise RuntimeError("Decrypted response is not a JSON object")
 
                     # Close the subscription
                     await self._ws.send(json.dumps(["CLOSE", sub_id]))
@@ -148,8 +173,8 @@ class NWCClient:
                     if "error" in result:
                         err = result["error"]
                         raise NWCError(
-                            code=err.get("code", "UNKNOWN"),
-                            message=err.get("message", "Unknown wallet error"),
+                            code=err.get("code", "UNKNOWN") if isinstance(err, dict) else "UNKNOWN",
+                            message=err.get("message", "Unknown wallet error") if isinstance(err, dict) else str(err),
                         )
 
                     return result.get("result", {})
@@ -194,6 +219,11 @@ class NWCClient:
         Returns:
             PayResponse with the payment preimage.
         """
+        if not isinstance(invoice, str) or not invoice.strip():
+            raise ValueError("invoice must be a non-empty string")
+        if amount is not None:
+            if not isinstance(amount, int) or amount <= 0:
+                raise ValueError("amount must be a positive integer (millisatoshis)")
         params: dict[str, Any] = {"invoice": invoice}
         if amount is not None:
             params["amount"] = amount
@@ -218,6 +248,10 @@ class NWCClient:
         Returns:
             MakeInvoiceResponse with invoice string and payment_hash.
         """
+        if not isinstance(amount, int) or amount <= 0:
+            raise ValueError("amount must be a positive integer (millisatoshis)")
+        if expiry is not None and (not isinstance(expiry, int) or expiry <= 0):
+            raise ValueError("expiry must be a positive integer (seconds)")
         params: dict[str, Any] = {"amount": amount}
         if description:
             params["description"] = description
@@ -245,6 +279,10 @@ class NWCClient:
         Returns:
             LookupInvoiceResponse with payment status.
         """
+        if payment_hash and not isinstance(payment_hash, str):
+            raise ValueError("payment_hash must be a string")
+        if invoice and not isinstance(invoice, str):
+            raise ValueError("invoice must be a string")
         params: dict[str, Any] = {}
         if payment_hash:
             params["payment_hash"] = payment_hash

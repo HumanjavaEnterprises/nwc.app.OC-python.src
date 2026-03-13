@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from urllib.parse import urlparse, parse_qs
+
+_HEX64_RE = re.compile(r"^[0-9a-fA-F]{64}$")
 
 
 @dataclass(frozen=True)
@@ -49,9 +52,9 @@ class NWCConnection:
         parsed = urlparse(normalized)
 
         wallet_pubkey = parsed.hostname
-        if not wallet_pubkey or len(wallet_pubkey) != 64:
+        if not wallet_pubkey or not _HEX64_RE.match(wallet_pubkey):
             raise ValueError(
-                f"Invalid wallet pubkey in NWC URI — expected 64-char hex, got: {wallet_pubkey}"
+                "Invalid wallet pubkey in NWC URI — expected exactly 64 hex characters"
             )
 
         params = parse_qs(parsed.query)
@@ -65,9 +68,9 @@ class NWCConnection:
         if not secret_list:
             raise ValueError("Missing required 'secret' parameter in NWC URI")
         secret = secret_list[0]
-        if len(secret) != 64:
+        if not _HEX64_RE.match(secret):
             raise ValueError(
-                f"Invalid secret in NWC URI — expected 64-char hex, got length {len(secret)}"
+                "Invalid secret in NWC URI — expected exactly 64 hex characters"
             )
 
         lud16_list = params.get("lud16")

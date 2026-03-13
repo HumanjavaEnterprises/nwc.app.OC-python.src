@@ -51,6 +51,18 @@ class TestNWCConnectionParse:
         with pytest.raises(ValueError, match="Invalid secret"):
             NWCConnection.parse(make_uri(secret="tooshort"))
 
+    def test_parse_non_hex_pubkey(self):
+        """Pubkey with correct length but non-hex chars should be rejected."""
+        non_hex_pubkey = "g" * 64
+        with pytest.raises(ValueError, match="Invalid wallet pubkey"):
+            NWCConnection.parse(make_uri(pubkey=non_hex_pubkey))
+
+    def test_parse_non_hex_secret(self):
+        """Secret with correct length but non-hex chars should be rejected."""
+        non_hex_secret = "z" * 64
+        with pytest.raises(ValueError, match="Invalid secret"):
+            NWCConnection.parse(make_uri(secret=non_hex_secret))
+
 
 class TestNWCConnectionRoundtrip:
     def test_to_uri_roundtrip(self):
