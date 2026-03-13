@@ -1,7 +1,7 @@
 """Create a Lightning invoice to receive payment via NWC."""
 
 import asyncio
-from nostrnwc import NWCClient
+from nostrwalletconnect import NWCClient
 
 NWC_URI = "nostr+walletconnect://<wallet_pubkey>?relay=wss://relay.example.com&secret=<hex_secret>"
 

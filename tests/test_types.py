@@ -1,6 +1,6 @@
 """Tests for NWC response types."""
 
-from nostrnwc.types import (
+from nostrwalletconnect.types import (
     BalanceResponse,
     GetInfoResponse,
     ListTransactionsResponse,

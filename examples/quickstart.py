@@ -1,7 +1,7 @@
 """Quick start — connect to a wallet and check balance."""
 
 import asyncio
-from nostrnwc import NWCClient
+from nostrwalletconnect import NWCClient
 
 # Paste your NWC connection string from your wallet app
 NWC_URI = "nostr+walletconnect://<wallet_pubkey>?relay=wss://relay.example.com&secret=<hex_secret>"

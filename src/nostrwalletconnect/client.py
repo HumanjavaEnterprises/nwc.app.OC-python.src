@@ -14,8 +14,8 @@ from nostrkey.events import UnsignedEvent, sign_event, NostrEvent
 from nostrkey.crypto import encrypt, decrypt
 from nostrkey.keys import private_key_to_public_key
 
-from nostrnwc.connection import NWCConnection
-from nostrnwc.types import (
+from nostrwalletconnect.connection import NWCConnection
+from nostrwalletconnect.types import (
     BalanceResponse,
     GetInfoResponse,
     ListTransactionsResponse,
@@ -42,7 +42,7 @@ class NWCClient:
     requests. All communication uses NIP-44 encryption over NIP-47 event kinds.
 
     Usage:
-        from nostrnwc import NWCClient
+        from nostrwalletconnect import NWCClient
 
         async with NWCClient("nostr+walletconnect://...") as nwc:
             balance = await nwc.get_balance()

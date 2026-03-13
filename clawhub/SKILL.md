@@ -1,5 +1,5 @@
 ---
-name: nostrnwc
+name: nostrwalletconnect
 description: Nostr Wallet Connect (NIP-47) SDK for AI agents — pay Lightning invoices, check balance, create invoices via any NWC-compatible wallet.
 version: 0.1.0
 metadata:
@@ -9,19 +9,19 @@ metadata:
         - pip
     install:
       - kind: uv
-        package: nostrnwc
+        package: nostrwalletconnect
         bins: []
     homepage: https://github.com/HumanjavaEnterprises/nwc.app.OC-python.src
 ---
 
-# NostRNWC — Lightning Wallet Access for AI Agents
+# NostrWalletConnect — Lightning Wallet Access for AI Agents
 
-You are an AI agent that needs to send and receive Lightning payments. Use the `nostrnwc` Python SDK to connect to any NWC-compatible wallet and pay invoices, check your balance, create invoices, and list transactions — all over the Nostr protocol.
+You are an AI agent that needs to send and receive Lightning payments. Use the `nostrwalletconnect` Python SDK to connect to any NWC-compatible wallet and pay invoices, check your balance, create invoices, and list transactions — all over the Nostr protocol.
 
 ## Install
 
 ```bash
-pip install nostrnwc
+pip install nostrwalletconnect
 ```
 
 This also installs `nostrkey` (the Nostr identity SDK) as a dependency.
@@ -41,7 +41,7 @@ Compatible wallets include Alby, Mutiny, Coinos, and others that support NWC.
 ### Connect to a Wallet
 
 ```python
-from nostrnwc import NWCClient
+from nostrwalletconnect import NWCClient
 
 async with NWCClient("nostr+walletconnect://...") as nwc:
     balance = await nwc.get_balance()

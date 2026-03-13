@@ -1,6 +1,6 @@
 {
-  "slug": "nostrnwc",
-  "name": "NostRNWC",
+  "slug": "nostrwalletconnect",
+  "name": "NostrWalletConnect",
   "version": "0.1.0",
   "summary": "Nostr Wallet Connect (NIP-47) SDK for AI agents — pay Lightning invoices, check balance, create invoices via any NWC-compatible wallet",
   "author": {
@@ -22,7 +22,7 @@
     "ai-payments"
   ],
   "install": {
-    "pip": "nostrnwc"
+    "pip": "nostrwalletconnect"
   },
   "requires": {
     "python": ">=3.10"

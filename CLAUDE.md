@@ -7,12 +7,12 @@ Open-source Python SDK for OpenClaw AI entities to connect to Lightning wallets 
 This SDK gives AI agents wallet access without custody. The human controls the wallet. The agent gets a scoped NWC connection string. Built on top of `nostrkey` for all Nostr crypto/relay primitives.
 
 ## Package Name
-`nostrnwc` on PyPI — `pip install nostrnwc`
+`nostrwalletconnect` on PyPI — `pip install nostrwalletconnect`
 
 ## Module Structure
-- `nostrnwc.connection` — parse `nostr+walletconnect://` URIs (NWCConnection dataclass)
-- `nostrnwc.client` — NWCClient async context manager, all NIP-47 methods
-- `nostrnwc.types` — response dataclasses (BalanceResponse, PayResponse, etc.)
+- `nostrwalletconnect.connection` — parse `nostr+walletconnect://` URIs (NWCConnection dataclass)
+- `nostrwalletconnect.client` — NWCClient async context manager, all NIP-47 methods
+- `nostrwalletconnect.types` — response dataclasses (BalanceResponse, PayResponse, etc.)
 
 ## Key Design Decisions
 - Depends on `nostrkey` — no duplication of crypto/relay code

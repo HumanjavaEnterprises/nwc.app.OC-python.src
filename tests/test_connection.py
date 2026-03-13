@@ -2,7 +2,7 @@
 
 import pytest
 
-from nostrnwc.connection import NWCConnection
+from nostrwalletconnect.connection import NWCConnection
 
 
 VALID_PUBKEY = "a" * 64

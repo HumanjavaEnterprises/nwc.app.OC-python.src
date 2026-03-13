@@ -1,4 +1,4 @@
-# NostRNWC for OpenClaw
+# NostrWalletConnect for OpenClaw
 
 **Give your AI access to a Lightning wallet.**
 
@@ -21,7 +21,7 @@ All communication is NIP-44 encrypted over Nostr relays. The relay operator sees
 ## Install
 
 ```bash
-pip install nostrnwc
+pip install nostrwalletconnect
 ```
 
 This also installs [nostrkey](https://pypi.org/project/nostrkey/) as a dependency (for Nostr identity, signing, and encryption).
@@ -30,7 +30,7 @@ This also installs [nostrkey](https://pypi.org/project/nostrkey/) as a dependenc
 
 ```python
 import asyncio
-from nostrnwc import NWCClient
+from nostrwalletconnect import NWCClient
 
 # Paste your NWC connection string from your wallet
 NWC_URI = "nostr+walletconnect://<wallet_pubkey>?relay=wss://...&secret=<hex_secret>"
@@ -90,10 +90,10 @@ Built on top of nostrkey which implements NIP-01, NIP-19, NIP-44.
 
 ## OpenClaw Skill (ClawHub)
 
-This repo includes an OpenClaw skill in `clawhub/` so AI agents can discover and use NostRNWC directly from the [ClawHub registry](https://clawhub.ai/).
+This repo includes an OpenClaw skill in `clawhub/` so AI agents can discover and use NostrWalletConnect directly from the [ClawHub registry](https://clawhub.ai/).
 
 ```bash
-clawhub install nostrnwc
+clawhub install nostrwalletconnect
 ```
 
 ## License
