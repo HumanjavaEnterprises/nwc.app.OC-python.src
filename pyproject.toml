@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "nostrwalletconnect"
-version = "0.1.1"
+version = "0.1.2"
 description = "Nostr Wallet Connect (NIP-47) SDK for OpenClaw AI entities — pay invoices, check balance, create invoices"
 readme = "README.md"
 license = "MIT"

@@ -1,7 +1,7 @@
 ---
 name: nostrwalletconnect
 description: Nostr Wallet Connect (NIP-47) SDK for AI agents — pay Lightning invoices, check balance, create invoices via any NWC-compatible wallet.
-version: 0.1.1
+version: 0.1.2
 metadata:
   openclaw:
     requires:
