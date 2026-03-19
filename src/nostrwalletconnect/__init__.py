@@ -3,7 +3,7 @@
 from nostrwalletconnect.client import NWCClient
 from nostrwalletconnect.connection import NWCConnection
 
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 __all__ = [
     "NWCClient",
     "NWCConnection",
