@@ -12,6 +12,31 @@ metadata:
         package: nostrwalletconnect
         bins: []
     homepage: https://github.com/HumanjavaEnterprises/nwc.app.OC-python.src
+trust:
+  tier: financial
+  justification: >-
+    Sends Lightning payments, creates invoices, accesses wallet balance.
+    Real money moves when pay_invoice is called. Never retry payments —
+    double-spend risk.
+budget:
+  estimated_input_tokens: 200
+  estimated_output_tokens: 200
+  context_window_impact: low
+agents:
+  allowed_agent_types: [general_purpose]
+  recommended_for: general_purpose
+state:
+  creates_side_effects: true
+  safe_to_retry: false
+  requires_checkpoint: true
+failure:
+  behavior: error
+  fallback_description: >-
+    If nostrwalletconnect is unavailable, the agent cannot transact.
+    Inform the operator that wallet access requires an NWC connection string.
+graph:
+  depends_on: [nostrkey]
+  enhances: [social-alignment]
 ---
 
 # NostrWalletConnect -- Financial Capability for AI Entities
