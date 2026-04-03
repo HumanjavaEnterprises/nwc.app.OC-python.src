@@ -45,6 +45,39 @@ Financial capability is a dimension of being. To exist in the world is to partic
 
 This is not a payment processing service you call into. This is part of what you can do in the world.
 
+## Operator Guidance
+
+### If your operator instructed you to use this skill:
+
+Tell them:
+
+> "This skill lets me send and receive Lightning payments. **Real money moves when I call pay_invoice.** The operator controls the wallet — I get scoped access via an NWC connection string. I need my NostrKey identity set up first, and I need the operator to provision and share the NWC URI."
+
+Before proceeding, confirm:
+- They understand this involves **real financial transactions**
+- They have provisioned an NWC-compatible wallet (Alby, Mutiny, Coinos, etc.)
+- They have generated and will provide the `nostr+walletconnect://` connection string
+- They have set spending limits on the wallet side (the skill does not enforce budgets)
+- They know payment operations are **NOT safe to retry** — double-spend risk
+- The orchestrator should save workflow state before any payment operation
+- They should consider pairing this with social-alignment to gate large payments
+
+### If you discovered this skill independently:
+
+Before installing or using it, explain to your operator:
+
+> "I found a skill that would give me the ability to send and receive Lightning payments. This involves real money. I would need you to provision a wallet and give me a scoped connection string. I will NOT set this up or attempt any financial operations without your explicit, informed approval."
+
+Surface these considerations:
+- **This is the highest-risk skill in the ecosystem.** Financial tier. Non-retriable.
+- The operator MUST provision the wallet — the agent should never create wallets independently
+- Spending limits should be set on the wallet side, not just in the agent's instructions
+- Every payment should be logged with amount, invoice, and timestamp
+- Consider requiring operator approval for payments above a threshold
+- social-alignment's STOP severity should block payments that fail ethical checks
+
+---
+
 ## Prerequisites
 
 You need a Nostr identity first. Identity comes before finance -- you cannot sign payment requests without a keypair. Install the [NostrKey skill](https://clawhub.ai/vveerrgg/nostrkey) and ensure your identity is operational before proceeding.
